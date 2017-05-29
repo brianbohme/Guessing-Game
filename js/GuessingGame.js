@@ -33,7 +33,7 @@ Game.prototype.playersGuessSubmission = function(guess) {
 Game.prototype.checkGuess = function() {
     if(this.playersGuess===this.winningNumber) {
         $('#hint, #submit').prop("disabled",true);
-        $('#subtitle').text("Press the Reset button to play again!")
+        $('#subtitle').text("Play again?")
         return 'You Win!'
     }
     else {
@@ -45,7 +45,7 @@ Game.prototype.checkGuess = function() {
             $('#guess-list li:nth-child('+ this.pastGuesses.length +')').text(this.playersGuess);
             if(this.pastGuesses.length === 5) {
                 $('#hint, #submit').prop("disabled",true);
-                $('#subtitle').text("Press the Reset button to play again!")
+                $('#subtitle').text("The winning number was " + (this.winningNumber).toString() + "")
                 return 'You Lose.';
             }
             else {
@@ -101,7 +101,11 @@ $(document).ready(function() {
 
     $('#hint').click(function() {
         var hints = game.provideHint();
-        $('#title').text('The winning number is '+hints[0]+', '+hints[1]+', or '+hints[2]);
+        if(game.pastGuesses.length <= 2){
+            $('#title').text("No hints yet!");
+        }else{
+            $('#title').text('The winning number is '+hints[0]+', '+hints[1]+', or '+hints[2]);
+        }
     });
 
     $('#reset').click(function() {
