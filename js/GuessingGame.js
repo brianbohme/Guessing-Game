@@ -32,6 +32,8 @@ Game.prototype.playersGuessSubmission = function(guess) {
 
 Game.prototype.checkGuess = function() {
     if(this.playersGuess===this.winningNumber) {
+        this.pastGuesses.push(this.playersGuess);
+        $('#guess-list li:nth-child('+ this.pastGuesses.length +')').text(this.playersGuess);
         $('#hint, #submit').prop("disabled",true);
         $('#subtitle').text("Play again?")
         return 'You Win!'
@@ -94,8 +96,16 @@ $(document).ready(function() {
     })
 
     $('#player-input').keypress(function(event) {
-        if ( event.which == 13 ) {
-           makeAGuess(game);
+        if(event.which == 13){
+           if (game.pastGuesses.length === 5){
+                game = newGame();
+                $('#title').text('Play the Guessing Game!');
+                $('#subtitle').text('Guess a number between 1-100')
+                $('.guess').text('?');
+                $('#hint, #submit').prop("disabled",false);
+            }else{
+                makeAGuess(game);
+            }
         }
     })
 
