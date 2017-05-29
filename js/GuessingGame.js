@@ -97,7 +97,7 @@ $(document).ready(function() {
 
     $('#player-input').keypress(function(event) {
         if(event.which == 13){
-           if (game.pastGuesses.length === 5){
+           if (game.pastGuesses.length === 5 || game.playersGuess === game.winningNumber){
                 game = newGame();
                 $('#title').text('Play the Guessing Game!');
                 $('#subtitle').text('Guess a number between 1-100')
