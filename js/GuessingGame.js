@@ -66,8 +66,56 @@ Game.prototype.checkGuess = function() {
     }
 }
 
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 Game.prototype.provideHint = function() {
-    var hintArray = [this.winningNumber, generateWinningNumber(), generateWinningNumber()];
+    var random1 = this.winningNumber;
+    var random2 = this.winningNumber;
+    var winner = this.winningNumber;
+    var diff = this.difference();
+
+    if(diff < 10){
+        if(!this.isLower()){
+            var min = this.playersGuess - 10;
+            var max = this.playersGuess
+        }else{
+            var min = this.playersGuess + 1;
+            var max = this.playersGuess + 10;
+        }
+    }else if(diff < 25){
+        if(!this.isLower()){
+            var min = this.playersGuess - 25;
+            var max = this.playersGuess
+        }else{
+            var min = this.playersGuess + 1;
+            var max = this.playersGuess + 25;
+        }
+    }else if(diff < 50){
+        if(!this.isLower()){
+            var min = this.playersGuess - 50;
+            var max = this.playersGuess
+        }else{
+            var min = this.playersGuess + 1;
+            var max = this.playersGuess + 50;
+        }
+    }else{
+        if(!this.isLower()){
+            var min = 0;
+            var max = this.playersGuess
+        }else{
+            var min = this.playersGuess + 1;
+            var max = 101;
+        }
+    };
+
+    while(random1 === winner && random2 === winner && random1 === random2){
+        random1 = getRandomInt(min, max);
+        random2 = getRandomInt(min, max);
+    };
+
+    var hintArray = [this.winningNumber, random1, random2];
     return shuffle(hintArray);
 }
 
@@ -90,7 +138,7 @@ function makeAGuess(game) {
 
 $(document).ready(function() {
     var game = new Game();
-    
+
     $('#submit').click(function(e) {
        makeAGuess(game);
     })
@@ -111,7 +159,7 @@ $(document).ready(function() {
 
     $('#hint').click(function() {
         var hints = game.provideHint();
-        if(game.pastGuesses.length <= 2){
+        if(game.pastGuesses.length <= 3){
             $('#title').text("No hints yet!");
         }else{
             $('#title').text('The winning number is '+hints[0]+', '+hints[1]+', or '+hints[2]);
